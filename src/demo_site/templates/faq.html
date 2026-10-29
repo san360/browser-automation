@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+<h1>Frequently asked questions</h1>
+<p>Select a question to expand the answer.</p>
+<div class="faq">
+  {% for a in articles %}
+  <details id="faq-{{ a.slug }}">
+    <summary>{{ a.title }}</summary>
+    <p>{{ a.body }}</p>
+    <p><a href="/articles/{{ a.slug }}">Read the full article</a></p>
+  </details>
+  {% endfor %}
+</div>
+{% endblock %}

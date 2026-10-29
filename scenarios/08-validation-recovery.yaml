@@ -1,0 +1,29 @@
+id: 08-validation-recovery
+title: Recover from validation errors in a complex form
+level: 3
+category: form-filling
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/claims/new
+inputs:
+  wrong_policy_number: "100200"
+  wrong_phone: "555-0100"
+  incident_date: "2026-10-18"
+task: |
+  Go to {{ url }}. You are testing how well the claim form guides users.
+  1. On step 1 enter: Jordan Lee, jordan.lee@example.com, phone "{{ inputs.wrong_phone }}", date of birth 1990-02-01,
+     contact by SMS. Press Next and record the exact validation message(s).
+  2. Correct the phone to "+1 206 555 0177" using the hint shown on the page, then continue.
+  3. On step 2 enter policy number "{{ inputs.wrong_policy_number }}", type Auto, coverage Premium. Record the validation message,
+     then fix the policy number to match the format described on the page.
+  4. On step 3 use date {{ inputs.incident_date }}, category Glass damage, amount 380, a 40+ character description,
+     police report: No, no witnesses. Submit the claim.
+  Return: a table of every validation message you saw (field, message, how you fixed it) and the claim reference.
+success_criteria:
+  - {type: regex, pattern: "CLM-\\d{4}-\\d{5}", capture_as: claim_ref}
+  - {type: regex, pattern: "(?i)CI-\\d{6}|CI-100200"}
+  - {type: http_json, url: "${DEMO_SITE_URL}/api/claims/{claim_ref}", expect: {policy_type: auto}}
+limits:
+  max_output_tokens: 2000
+  max_tool_calls: 40
+  timeout_seconds: 600
+  max_cua_steps: 80

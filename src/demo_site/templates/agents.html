@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Find an agent{% endblock %}
+{% block content %}
+<h1>Find an agent</h1>
+<form class="panel" action="/agents" method="get" id="agent-search">
+  <div class="field">
+    <label for="city">City</label>
+    <select id="city" name="city">
+      <option value="">Any city</option>
+      {% for c in cities %}<option value="{{ c }}" {% if c == city %}selected{% endif %}>{{ c }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="specialty">Specialty</label>
+    <select id="specialty" name="specialty">
+      <option value="">Any specialty</option>
+      {% for s in specialties %}<option value="{{ s }}" {% if s == specialty %}selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <fieldset class="field">
+    <legend>Speaks (all selected)</legend>
+    {% for l in languages %}<label><input type="checkbox" name="language" value="{{ l }}" {% if l in selected_languages %}checked{% endif %}> {{ l }}</label>{% endfor %}
+  </fieldset>
+  <button type="submit">Search agents</button>
+</form>
+
+{% if searched %}
+<p class="result-count" id="agent-count">{{ results|length }} agent{{ '' if results|length == 1 else 's' }} found</p>
+<table class="data-table" id="agent-results">
+  <thead><tr><th scope="col">Name</th><th scope="col">City</th><th scope="col">Specialties</th><th scope="col">Languages</th><th scope="col">Phone</th><th scope="col">Email</th><th scope="col">Rating</th></tr></thead>
+  <tbody>
+    {% for a in results %}
+    <tr><th scope="row">{{ a.name }}</th><td>{{ a.city }}</td><td>{{ a.specialties|join(', ') }}</td><td>{{ a.languages|join(', ') }}</td><td>{{ a.phone }}</td><td>{{ a.email }}</td><td>{{ a.rating }}</td></tr>
+    {% else %}
+    <tr><td colspan="7">No agents match these filters.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+id: 04-compare-plans
+title: Compare plans with the site's compare feature and recommend one
+level: 2
+category: navigation
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/products?type=home
+inputs:
+  plans: Home Basic, Home Plus and Home Premium
+  customer: a family that lives next to a river and works from home with expensive equipment
+task: |
+  Go to {{ url }}. Select {{ inputs.plans }} using the "Compare" checkboxes and press
+  "Compare selected plans" (use the site's feature rather than reading the table only).
+  From the comparison page, produce a Markdown table with monthly premium, annual cost, deductible and coverage limit.
+  Then recommend the best plan for {{ inputs.customer }} and justify it using what is and is not included.
+success_criteria:
+  - {type: contains, value: "Home Premium"}
+  - {type: regex, pattern: "(?i)flood"}
+limits:
+  max_output_tokens: 2000
+  max_tool_calls: 15
+  timeout_seconds: 300
+  max_cua_steps: 25

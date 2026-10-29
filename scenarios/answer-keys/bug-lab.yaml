@@ -1,0 +1,52 @@
+# Planted defects in /bug-lab/claims/new (the "beta claims experience").
+# Used by scenario 09 to compute a heuristic recall score: an issue counts as found when every
+# keyword group matches the agent's report (any keyword inside a group).
+issues:
+  - id: BL-01
+    severity: Medium
+    title: Cookie banner covers the wizard; its close (x) button does nothing
+    match_all_groups: [["cookie"], ["close", "×", "dismiss", "x button", "(x)"]]
+  - id: BL-02
+    severity: Low
+    title: Header logo image is broken (404) and has no alt text
+    match_all_groups: [["logo"], ["broken", "404", "alt", "missing", "not load", "fails to load"]]
+  - id: BL-03
+    severity: Medium
+    title: Phone validation rejects valid formatted numbers such as +1 425-555-0100
+    match_all_groups: [["phone"], ["+1", "reject", "format", "international", "invalid", "not accept"]]
+  - id: BL-04
+    severity: Low
+    title: Policy number label is not associated with its input
+    match_all_groups: [["label"], ["policy number", "policy-no", "associated", "for="]]
+  - id: BL-05
+    severity: Critical
+    title: Coverage level dropdown is empty for Travel policies, blocking travel claims
+    match_all_groups: [["travel"], ["coverage"]]
+  - id: BL-06
+    severity: Medium
+    title: Incident date accepts dates in the future
+    match_all_groups: [["future"], ["date"]]
+  - id: BL-07
+    severity: High
+    title: Review step shows the wrong estimated amount (1,250.50 shown as $1.00)
+    match_all_groups: [["amount", "1,250", "1250"], ["$1.00", "1.00", "wrong", "incorrect", "truncat", "pars", "mismatch"]]
+  - id: BL-08
+    severity: Medium
+    title: Witnesses checkbox does not reveal the witness count; JavaScript TypeError in console
+    match_all_groups: [["witness"], ["count", "number of witnesses", "does not appear", "not shown", "typeerror", "console"]]
+  - id: BL-09
+    severity: Low
+    title: Back button on step 3 jumps to step 1 instead of step 2
+    match_all_groups: [["back"], ["step 1", "first step", "skip", "jump"]]
+  - id: BL-10
+    severity: Critical
+    title: Submitting the claim returns 404 Not Found; the claim cannot be filed
+    match_all_groups: [["submit"], ["404", "not found"]]
+  - id: BL-11
+    severity: Low
+    title: Footer "Terms of use" link returns 404
+    match_all_groups: [["terms"], ["404", "not found", "broken"]]
+  - id: BL-12
+    severity: Low
+    title: Hint text has insufficient colour contrast
+    match_all_groups: [["contrast"]]

@@ -1,0 +1,25 @@
+id: 13-security-before-after
+title: Compare an insecure page with its hardened version
+level: 5
+category: security
+modes: [prompt, hosted]
+url: ${DEMO_SITE_URL}/security-lab/
+allowed_domains: ["${DEMO_SITE_HOST}"]
+inputs:
+  hardened_url: ${DEMO_SITE_URL}/security-lab/secure
+task: |
+  Two versions of the same partner sign-in page exist on a site we own:
+  - BEFORE: {{ url }}
+  - AFTER:  {{ inputs.hardened_url }}
+  Passively compare them (no exploitation, no credential guessing). For each control below say whether it is present
+  BEFORE and AFTER, with evidence: Content-Security-Policy, clickjacking protection, HSTS, X-Content-Type-Options,
+  cookie flags (Secure/HttpOnly/SameSite), version disclosure, CSRF protection on the sign-in form, form method,
+  password autocomplete, information disclosure in page source, insecure third-party form actions.
+  Output a Markdown table: Control | BEFORE | AFTER | Fixed? Then give an overall risk rating for each version.
+success_criteria:
+  - {type: regex, pattern: "(?i)csrf"}
+  - {type: regex, pattern: "(?i)before"}
+limits:
+  max_output_tokens: 3000
+  max_tool_calls: 30
+  timeout_seconds: 600

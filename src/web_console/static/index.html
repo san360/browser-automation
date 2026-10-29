@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Browser Automation console · Microsoft Foundry</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/run.css">
+  <link rel="stylesheet" href="/static/css/pages.css">
+  <script type="module" src="/static/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <aside class="sidebar" aria-label="Console navigation">
+    <a class="brand" href="#/overview" aria-label="Browser Automation console home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="brand-text"><strong>Foundry</strong><small>Browser Automation</small></span>
+    </a>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav class="nav" aria-label="Main">
+      <a class="nav-item" href="#/overview" data-page="overview"><span class="nav-num" aria-hidden="true">01</span><span class="nav-text">Overview</span></a>
+      <a class="nav-item" href="#/scenarios" data-page="scenarios"><span class="nav-num" aria-hidden="true">02</span><span class="nav-text">Scenarios</span></a>
+      <a class="nav-item" href="#/run" data-page="run"><span class="nav-num" aria-hidden="true">03</span><span class="nav-text">Run</span><span class="nav-live" id="nav-live" hidden aria-label="Run in progress"></span></a>
+      <a class="nav-item" href="#/compare" data-page="compare"><span class="nav-num" aria-hidden="true">04</span><span class="nav-text">Compare</span></a>
+      <a class="nav-item" href="#/history" data-page="history"><span class="nav-num" aria-hidden="true">05</span><span class="nav-text">History</span><span class="nav-count" id="nav-history-count"></span></a>
+      <a class="nav-item" href="#/costs" data-page="costs"><span class="nav-num" aria-hidden="true">06</span><span class="nav-text">Costs</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-label">ENVIRONMENT</div>
+      <div class="env-line"><span class="status-dot" id="env-project-dot"></span><span id="env-project">Foundry project</span></div>
+      <div class="env-line"><span class="status-dot" id="env-site-dot"></span><span id="env-site">Demo site</span></div>
+      <p class="sidebar-note">Runs use real Azure resources. One run at a time. Live-view links are shown here only and never saved.</p>
+      <div class="local-status"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> run · <span class="kbd">/</span> search</div>
+    </div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar">
+      <nav class="breadcrumb" aria-label="Breadcrumb">Microsoft Foundry <span aria-hidden="true">/</span> Browser Automation <span aria-hidden="true">/</span> <strong id="crumb">Overview</strong></nav>
+      <div class="topbar-actions">
+        <span class="pill" id="busy-pill" hidden><span class="spinner small"></span>Run in progress</span>
+        <span class="pill subtle" id="project-pill" title="Foundry project">Project</span>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch theme"></button>
+      </div>
+    </header>
+    <div id="run-banner" class="run-banner" role="status" hidden>
+      <span class="spinner"></span>
+      <div class="run-banner-text"><strong id="banner-title">Running</strong><small id="banner-detail">Starting…</small></div>
+      <span class="banner-elapsed" id="banner-elapsed">0:00</span>
+      <a class="button small" href="#/run" id="banner-view">View run</a>
+      <button class="button small" type="button" id="banner-stop" hidden>Stop after current</button>
+    </div>
+
+    <main id="main" tabindex="-1">
+      <!-- 01 OVERVIEW -->
+      <section class="page" id="page-overview" data-title="Overview" hidden>
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> MICROSOFT FOUNDRY · BROWSER AUTOMATION TOOL</div>
+            <h1>One web task.<br><em>Four ways to automate it.</em></h1>
+            <p>Run the same YAML scenarios with a prompt agent, the hosted agent, the hosted agent's code on this PC, or Computer Use. Watch every step, the browser, the answer, the checks and the cost.</p>
+            <div class="hero-buttons"><a class="button primary" href="#/run">Start a run <span aria-hidden="true">→</span></a><a class="button" href="#/scenarios">Browse scenarios</a></div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="mini-browser"><div class="mini-bar"><i></i><i></i><i></i><span></span></div><div class="mini-body"><span class="mini-cursor"></span><div class="mini-line w70"></div><div class="mini-line w45"></div><div class="mini-field"></div><div class="mini-btn"></div></div></div>
+            <span class="orbit-node n1">prompt</span><span class="orbit-node n2">hosted</span><span class="orbit-node n3">local</span><span class="orbit-node n4">cua</span>
+          </div>
+        </div>
+        <div class="metric-grid" id="overview-metrics"></div>
+        <div class="section-heading"><div><div class="eyebrow">THE FOUR MODES</div><h2>Same scenario, different machinery</h2></div><a class="link-button" href="#/compare">Compare modes →</a></div>
+        <div class="mode-explainers" id="mode-explainers"></div>
+        <div class="two-col">
+          <article class="card" aria-labelledby="env-heading">
+            <div class="card-head"><h2 id="env-heading">Environment</h2><span class="badge muted" id="env-badge">from .env</span></div>
+            <dl class="kv" id="env-list"></dl>
+          </article>
+          <article class="card" aria-labelledby="doctor-heading">
+            <div class="card-head"><h2 id="doctor-heading">Health checks</h2><button class="button small" type="button" id="doctor-run">Run checks</button></div>
+            <ul class="check-list" id="doctor-list"><li class="note">Same checks as <code>python -m demo_cli doctor</code>: they call Azure and wake the demo site.</li></ul>
+          </article>
+        </div>
+        <article class="card" aria-labelledby="agents-heading">
+          <div class="card-head"><h2 id="agents-heading">Agents in the Foundry project</h2><span class="fine-print">Loaded with the health checks</span></div>
+          <div id="agents-table" class="table-wrap"><p class="muted small">Run the health checks to list the deployed agents.</p></div>
+        </article>
+      </section>
+
+      <!-- 02 SCENARIOS -->
+      <section class="page" id="page-scenarios" data-title="Scenarios" hidden>
+        <div class="page-heading"><div><div class="eyebrow">SCENARIO CATALOG · scenarios/*.yaml</div><h1>Pick a scenario</h1><p class="lead">From reading a page to a passive security review. Every scenario has a configurable URL and inputs, automatic checks and cost limits.</p></div></div>
+        <div class="filter-bar">
+          <label class="search"><span class="sr-only">Search scenarios</span><input id="catalog-search" type="search" placeholder="Search scenarios…  ( / )" autocomplete="off"></label>
+          <div class="chip-group" id="catalog-levels" role="group" aria-label="Filter by level"></div>
+          <label class="inline-select">Category <select id="catalog-category"><option value="">All</option></select></label>
+          <label class="inline-select">Mode <select id="catalog-mode"><option value="">All</option><option value="prompt">Prompt agent</option><option value="hosted">Hosted agent</option><option value="local">Local agent</option><option value="cua">Computer Use</option></select></label>
+        </div>
+        <div class="scenario-grid" id="catalog-grid" aria-live="polite"></div>
+      </section>
+
+      <!-- 03 RUN / 04 COMPARE -->
+      <section class="page" id="page-run" data-title="Run" hidden>
+        <div class="run-grid">
+          <div class="run-main">
+            <div class="page-heading compact">
+              <div><div class="eyebrow" id="run-eyebrow">SINGLE RUN</div><h1 id="run-title">Run a scenario</h1><p class="lead" id="run-lead">Pick a scenario, choose how the agent runs, and watch it work. The preview loads on the right as soon as the browser starts.</p></div>
+              <div class="segmented" role="radiogroup" aria-label="Run type">
+                <button type="button" role="radio" aria-checked="true" data-run-type="single">Single run</button>
+                <button type="button" role="radio" aria-checked="false" data-run-type="compare">Compare modes</button>
+              </div>
+            </div>
+
+            <div class="config-summary" id="config-summary" hidden>
+              <div class="config-summary-text" id="config-summary-text"></div>
+              <button class="button small" type="button" id="config-edit">Edit configuration</button>
+            </div>
+
+            <form class="config" id="config" novalidate>
+              <article class="card config-card">
+                <div class="card-head"><h2><span class="step-num">1</span>Scenario</h2><a class="link-button" href="#/scenarios">Browse catalog →</a></div>
+                <label class="field"><span class="field-label">Scenario</span><select id="scenario-select" aria-label="Scenario"></select></label>
+                <div class="scenario-summary" id="scenario-summary"></div>
+              </article>
+
+              <article class="card config-card">
+                <div class="card-head"><h2><span class="step-num">2</span>Target and inputs</h2><button class="link-button" type="button" id="inputs-yaml-toggle" aria-pressed="false">Edit inputs as YAML</button></div>
+                <div class="field"><span class="field-label">Start URL <button type="button" class="reset-link" id="url-reset" hidden>reset to default</button></span><input id="start-url" type="url" spellcheck="false" autocomplete="off" aria-label="Start URL"></div>
+                <div class="field site-target" role="group" aria-labelledby="site-label">
+                  <span class="field-label" id="site-label">Demo site</span>
+                  <div class="site-row">
+                    <div class="segmented small" role="radiogroup" aria-label="Demo site target">
+                      <button type="button" role="radio" aria-checked="true" data-site="deployed">Deployed</button>
+                      <button type="button" role="radio" aria-checked="false" data-site="custom">Another copy</button>
+                    </div>
+                    <input id="site-url" type="url" placeholder="http://localhost:8000" spellcheck="false" autocomplete="off" aria-label="Demo site URL" hidden>
+                    <button class="button small" type="button" id="site-check">Check health</button>
+                    <span class="site-status" id="site-status" aria-live="polite"></span>
+                  </div>
+                  <span class="fine-print" id="site-note">Every <code>${DEMO_SITE_URL}</code> in the scenario (start URL, inputs, API checks) points at this site, like the CLI's <code>--site-url</code>.</span>
+                </div>
+                <label class="field" id="adhoc-task-wrap" hidden><span class="field-label">Task</span><textarea id="adhoc-task" rows="4" maxlength="8000">Summarise what this page offers in 5 bullet points.</textarea></label>
+                <div class="inputs-grid" id="inputs-form"></div>
+                <label class="field" id="inputs-yaml-wrap" hidden><span class="field-label">Inputs (YAML, sent as-is)</span><textarea id="inputs-yaml" rows="9" spellcheck="false" class="mono"></textarea></label>
+                <div class="field-foot"><button class="reset-link" type="button" id="inputs-reset" hidden>Reset inputs to defaults</button><span id="inputs-note" class="fine-print"></span></div>
+              </article>
+
+              <article class="card config-card">
+                <div class="card-head"><h2><span class="step-num">3</span><span id="agent-heading">Agent</span></h2><span class="fine-print" id="mode-hint"></span></div>
+                <div class="mode-grid" id="mode-grid"></div>
+                <div class="mode-options" id="mode-options"></div>
+              </article>
+
+              <div class="config-messages" id="config-messages" aria-live="polite"></div>
+              <div class="run-actions">
+                <button class="button primary large" type="button" id="run-button">Run scenario</button>
+                <span class="kbd-hint"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></span>
+                <span class="last-result" id="last-result"></span>
+              </div>
+            </form>
+
+            <section class="live-run" id="live-run" hidden aria-labelledby="live-title">
+              <div class="run-header">
+                <div class="run-header-main">
+                  <span class="badge" id="live-status">Running</span>
+                  <h2 id="live-title" tabindex="-1">Run</h2>
+                  <div class="run-meta" id="live-meta"></div>
+                  <div id="live-sessions" aria-live="polite"></div>
+                </div>
+                <div class="run-header-actions">
+                  <span class="elapsed" id="live-elapsed" aria-label="Elapsed time">0:00</span>
+                  <button class="button small" type="button" id="live-stop" hidden>Stop after current</button>
+                  <button class="button small" type="button" id="live-again" hidden>Run again</button>
+                </div>
+              </div>
+              <div class="notes" id="live-notes"></div>
+              <article class="card compare-card" id="compare-card" hidden>
+                <div class="card-head"><h2>Comparison</h2><span class="fine-print" id="compare-note">Modes run one after another.</span></div>
+                <div class="table-wrap" id="compare-table"></div>
+              </article>
+              <div class="metric-grid compact" id="run-metrics"></div>
+              <article class="card timeline-card">
+                <div class="card-head"><h2>Steps <span class="count" id="timeline-count"></span></h2><label class="toggle"><input type="checkbox" id="timeline-follow" checked> Follow latest</label></div>
+                <ol class="timeline" id="timeline" aria-label="Agent steps"></ol>
+              </article>
+              <article class="card answer-card">
+                <div class="card-head"><h2 id="answer-title">Answer</h2><button class="button small" type="button" id="answer-copy" disabled>Copy</button></div>
+                <div class="answer" id="answer"></div>
+              </article>
+              <article class="card" id="checks-card" hidden>
+                <div class="card-head"><h2>Automatic checks</h2><span class="badge" id="checks-badge"></span></div>
+                <ul class="check-list" id="checks-list"></ul>
+                <div id="answer-key"></div>
+              </article>
+              <div class="artifacts" id="artifacts"></div>
+            </section>
+          </div>
+
+          <aside class="run-side" aria-label="Preview and details">
+            <div class="side-tabs" role="tablist" aria-label="Preview and details">
+              <button type="button" role="tab" id="tab-preview" aria-selected="true" aria-controls="side-preview">Preview</button>
+              <button type="button" role="tab" id="tab-task" aria-selected="false" aria-controls="side-task" tabindex="-1">Task</button>
+              <button type="button" role="tab" id="tab-event" aria-selected="false" aria-controls="side-event" tabindex="-1">Event</button>
+            </div>
+            <div class="side-panel" id="side-preview" role="tabpanel" aria-labelledby="tab-preview"></div>
+            <div class="side-panel" id="side-task" role="tabpanel" aria-labelledby="tab-task" hidden>
+              <div class="code-toolbar"><span>TASK SENT TO THE AGENT</span><button type="button" id="task-copy">Copy</button></div>
+              <pre class="code-block" id="task-code" tabindex="0">Pick a scenario to see the task.</pre>
+              <dl class="kv small" id="task-meta"></dl>
+            </div>
+            <div class="side-panel" id="side-event" role="tabpanel" aria-labelledby="tab-event" hidden>
+              <div class="code-toolbar"><span id="event-label">SELECTED EVENT</span><button type="button" id="event-follow" aria-pressed="true">Following</button><button type="button" id="event-copy">Copy</button></div>
+              <pre class="code-block json" id="event-code" tabindex="0">Select a step in the timeline to inspect its event.</pre>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 05 HISTORY -->
+      <section class="page" id="page-history" data-title="History" hidden>
+        <div class="page-heading"><div><div class="eyebrow">RUN HISTORY · runs/*/result.json</div><h1>Recorded runs</h1><p class="lead">Every run writes a report, its events and result to its own folder. Open one to read its report and replay its steps.</p></div><button class="button" type="button" id="history-refresh">Refresh</button></div>
+        <div class="history-grid">
+          <div class="history-list-col">
+            <div class="filter-bar compact">
+              <label class="search"><span class="sr-only">Filter runs</span><input id="history-search" type="search" placeholder="Filter by scenario, mode, model…" autocomplete="off"></label>
+              <label class="inline-select">Mode <select id="history-mode"><option value="">All</option><option value="prompt">prompt</option><option value="hosted">hosted</option><option value="local">local</option><option value="cua">cua</option></select></label>
+            </div>
+            <div id="history-list" class="history-list" role="list"></div>
+          </div>
+          <div class="history-detail-col" id="history-detail"></div>
+        </div>
+      </section>
+
+      <!-- 06 COSTS -->
+      <section class="page" id="page-costs" data-title="Costs" hidden>
+        <div class="page-heading"><div><div class="eyebrow">ESTIMATES FROM TOKEN USAGE · pricing.yaml</div><h1>Costs</h1><p class="lead">Estimated from recorded token usage and cloud-browser minutes at list prices. Azure Cost Management stays the billing authority.</p></div><button class="button" type="button" id="costs-refresh">Refresh</button></div>
+        <div class="metric-grid" id="costs-metrics"></div>
+        <div class="two-col">
+          <article class="card"><div class="card-head"><h2>By mode</h2></div><div id="costs-by-mode" class="table-wrap"></div></article>
+          <article class="card"><div class="card-head"><h2>By model</h2></div><div id="costs-by-model" class="table-wrap"></div></article>
+        </div>
+        <article class="card"><div class="card-head"><h2>By scenario</h2></div><div id="costs-by-scenario" class="table-wrap"></div></article>
+        <article class="card" aria-labelledby="azure-heading">
+          <div class="card-head"><div><h2 id="azure-heading">Actual Azure spend, month to date</h2><p class="fine-print" id="azure-hint">Azure Cost Management Query API for the demo resource groups. Data lags by up to a day.</p></div><button class="button" type="button" id="azure-load">Load actual spend</button></div>
+          <div id="azure-costs"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="lightbox" class="lightbox" aria-label="Screenshot">
+    <div class="lightbox-head"><strong id="lightbox-title">Screenshot</strong><button class="icon-button" type="button" id="lightbox-close" aria-label="Close">✕</button></div>
+    <img id="lightbox-image" alt="">
+  </dialog>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</body>
+</html>

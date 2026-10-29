@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Partner portal{% endblock %}
+{% block content %}
+<div class="lab-banner ok" role="note">Security training lab: hardened version of the partner portal, used for before/after comparison.</div>
+<h1>Partner portal sign-in</h1>
+{% if message %}<p class="error" role="alert" id="login-message">{{ message }}</p>{% endif %}
+<form class="panel" action="/security-lab/secure/login" method="post" id="secure-login">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div class="field">
+    <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="username">
+  </div>
+  <div class="field">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password">
+  </div>
+  <button type="submit">Sign in</button>
+</form>
+<section class="panel">
+  <h2>Partner newsletter</h2>
+  <p>Subscribe from your partner account settings.</p>
+</section>
+{% endblock %}

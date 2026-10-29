@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}File a claim{% endblock %}
+{% block content %}
+{% if buggy %}<p class="beta-note">Beta: you are using the new claims experience.</p>{% endif %}
+<h1>File a claim</h1>
+<ol class="progress" aria-label="Claim progress">
+  <li data-step-indicator="1" class="active">1. Policyholder</li>
+  <li data-step-indicator="2">2. Policy</li>
+  <li data-step-indicator="3">3. Incident</li>
+  <li data-step-indicator="4">4. Review &amp; submit</li>
+</ol>
+
+<script type="application/json" id="claim-options">{{ {"coverage": coverage, "categories": categories}|tojson }}</script>
+
+<form id="claim-form" class="panel wizard" action="{{ form_action }}" method="post" novalidate>
+  <fieldset data-step="1">
+    <legend>Step 1 of 4: Policyholder details</legend>
+    <div class="field">
+      <label for="first_name">First name</label>
+      <input id="first_name" name="first_name" autocomplete="given-name" required>
+      <p class="error" id="first_name-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="last_name">Last name</label>
+      <input id="last_name" name="last_name" autocomplete="family-name" required>
+      <p class="error" id="last_name-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required>
+      <p class="error" id="email-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="phone">Phone number</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+      <p class="hint{% if buggy %} low-contrast{% endif %}">Include the country code, for example +1 425-555-0100.</p>
+      <p class="error" id="phone-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="dob">Date of birth</label>
+      <input id="dob" name="dob" type="date" required>
+      <p class="error" id="dob-error" role="alert"></p>
+    </div>
+    <fieldset class="field" id="contact_method">
+      <legend>Preferred contact method</legend>
+      <label><input type="radio" name="contact_method" value="email"> Email</label>
+      <label><input type="radio" name="contact_method" value="phone"> Phone</label>
+      <label><input type="radio" name="contact_method" value="sms"> SMS</label>
+      <p class="error" id="contact_method-error" role="alert"></p>
+    </fieldset>
+    <div class="wizard-nav"><button type="button" class="next" data-next>Next</button></div>
+  </fieldset>
+
+  <fieldset data-step="2" hidden>
+    <legend>Step 2 of 4: Policy</legend>
+    <div class="field">
+      {% if buggy %}<label for="policy-no">Policy number</label>{% else %}<label for="policy_number">Policy number</label>{% endif %}
+      <input id="policy_number" name="policy_number" placeholder="CI-123456" required>
+      <p class="hint{% if buggy %} low-contrast{% endif %}">You can find it on your policy documents. Format: CI- followed by 6 digits.</p>
+      <p class="error" id="policy_number-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="policy_type">Policy type</label>
+      <select id="policy_type" name="policy_type" required>
+        <option value="">Choose a policy type</option>
+        <option value="auto">Auto</option>
+        <option value="home">Home</option>
+        <option value="travel">Travel</option>
+      </select>
+      <p class="error" id="policy_type-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="coverage_level">Coverage level</label>
+      <select id="coverage_level" name="coverage_level" required disabled>
+        <option value="">Choose a policy type first</option>
+      </select>
+      <p class="error" id="coverage_level-error" role="alert"></p>
+    </div>
+    <div class="wizard-nav">
+      <button type="button" class="secondary" data-back>Back</button>
+      <button type="button" class="next" data-next>Next</button>
+    </div>
+  </fieldset>
+
+  <fieldset data-step="3" hidden>
+    <legend>Step 3 of 4: Incident</legend>
+    <div class="field">
+      <label for="incident_date">Date of incident</label>
+      <input id="incident_date" name="incident_date" type="date" required {% if not buggy %}max="{{ today }}"{% endif %}>
+      <p class="error" id="incident_date-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="claim_category">What happened?</label>
+      <select id="claim_category" name="claim_category" required>
+        <option value="">Choose a category</option>
+      </select>
+      <p class="error" id="claim_category-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="estimated_amount">Estimated amount (USD)</label>
+      <input id="estimated_amount" name="estimated_amount" inputmode="decimal" placeholder="1,250.00" required>
+      <p class="error" id="estimated_amount-error" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="description">Describe what happened</label>
+      <textarea id="description" name="description" rows="4" minlength="30" required></textarea>
+      <p class="hint{% if buggy %} low-contrast{% endif %}">At least 30 characters.</p>
+      <p class="error" id="description-error" role="alert"></p>
+    </div>
+    <fieldset class="field" id="police_report">
+      <legend>Was a police report filed?</legend>
+      <label><input type="radio" name="police_report" value="yes"> Yes</label>
+      <label><input type="radio" name="police_report" value="no"> No</label>
+      <p class="error" id="police_report-error" role="alert"></p>
+    </fieldset>
+    <div class="field" id="police-report-number-group" hidden>
+      <label for="police_report_number">Police report number</label>
+      <input id="police_report_number" name="police_report_number" placeholder="PR-1234">
+      <p class="error" id="police_report_number-error" role="alert"></p>
+    </div>
+    <fieldset class="field">
+      <legend>Evidence</legend>
+      <label><input type="checkbox" id="photos_available" name="photos_available"> I have photos of the damage</label>
+      <label><input type="checkbox" id="witnesses" name="witnesses"> There were witnesses</label>
+    </fieldset>
+    <div class="field" id="witness-count-group" hidden>
+      <label for="witness_count">Number of witnesses</label>
+      <input id="witness_count" name="witness_count" type="number" min="1" max="10">
+      <p class="error" id="witness_count-error" role="alert"></p>
+    </div>
+    <div class="wizard-nav">
+      <button type="button" class="secondary" data-back>Back</button>
+      <button type="button" class="next" data-next>Next</button>
+    </div>
+  </fieldset>
+
+  <fieldset data-step="4" hidden>
+    <legend>Step 4 of 4: Review and submit</legend>
+    <dl class="summary" id="review-summary"></dl>
+    <div class="field">
+      <label><input type="checkbox" id="consent" name="consent" required> I confirm the information above is true and complete.</label>
+      <p class="error" id="consent-error" role="alert"></p>
+    </div>
+    <div class="wizard-nav">
+      <button type="button" class="secondary" data-back>Back</button>
+      {% if buggy %}<button type="button" id="submit-claim">Submit claim</button>{% else %}<button type="submit" id="submit-claim">Submit claim</button>{% endif %}
+    </div>
+  </fieldset>
+</form>
+
+{% if buggy %}
+<div class="cookie-banner" id="cookie-banner">
+  <div class="cookie-dialog" role="dialog" aria-label="Cookie consent">
+    <p>We use cookies to improve your experience. By continuing you accept our cookie policy.</p>
+    <div class="cookie-actions">
+      <button type="button" id="cookie-accept">Accept all</button>
+      <button type="button" id="cookie-close" class="icon-button" aria-label="Close">&times;</button>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+{% if buggy %}<script src="/static/js/claim-wizard-beta.js"></script>{% else %}<script src="/static/js/claim-wizard.js"></script>{% endif %}
+{% endblock %}

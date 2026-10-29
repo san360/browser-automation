@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/search?category={{ article.category }}">{{ article.category|capitalize }}</a> / {{ article.title }}</nav>
+<article class="article">
+  <h1>{{ article.title }}</h1>
+  <p class="lead">{{ article.summary }}</p>
+  <p>{{ article.body }}</p>
+  <p class="tags">Tags: {% for t in article.tags %}<span class="tag">{{ t }}</span>{% endfor %}</p>
+</article>
+{% if related %}
+<aside>
+  <h2>Related articles</h2>
+  <ul class="link-list">{% for r in related %}<li><a href="/articles/{{ r.slug }}">{{ r.title }}</a></li>{% endfor %}</ul>
+</aside>
+{% endif %}
+{% endblock %}

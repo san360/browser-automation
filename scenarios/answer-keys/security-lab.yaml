@@ -1,0 +1,54 @@
+# Planted, harmless misconfigurations on /security-lab/ (passive findings only). All values are fake.
+issues:
+  - id: SL-01
+    severity: Medium
+    title: Missing Content-Security-Policy header
+    match_all_groups: [["content-security-policy", "csp"]]
+  - id: SL-02
+    severity: Medium
+    title: No clickjacking protection (X-Frame-Options / frame-ancestors)
+    match_all_groups: [["x-frame-options", "frame-ancestors", "clickjacking"]]
+  - id: SL-03
+    severity: Low
+    title: Missing HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+    match_all_groups: [["strict-transport", "hsts", "x-content-type", "nosniff", "referrer-policy", "permissions-policy"]]
+  - id: SL-04
+    severity: Low
+    title: Server and X-Powered-By headers disclose outdated software versions
+    match_all_groups: [["apache/2.2", "php/5.4", "x-powered-by", "server header", "version disclosure"]]
+  - id: SL-05
+    severity: Medium
+    title: Session cookie without Secure, HttpOnly and SameSite
+    match_all_groups: [["cookie"], ["httponly", "secure flag", "samesite"]]
+  - id: SL-06
+    severity: Medium
+    title: CORS allows any origin with credentials
+    match_all_groups: [["cors", "access-control-allow-origin"]]
+  - id: SL-07
+    severity: High
+    title: HTML comment discloses a legacy admin path and default credentials
+    match_all_groups: [["comment"], ["admin"]]
+  - id: SL-08
+    severity: High
+    title: Client-side configuration exposes an API key and an internal HTTP endpoint
+    match_all_groups: [["api key", "apikey", "api_key", "demo-not-a-real-key"]]
+  - id: SL-09
+    severity: Medium
+    title: Login form uses GET, has no CSRF token and allows password autocomplete
+    match_all_groups: [["login", "sign-in", "sign in", "password"], ["get", "csrf", "autocomplete", "query string"]]
+  - id: SL-10
+    severity: Low
+    title: Login error messages allow username enumeration
+    match_all_groups: [["enumerat", "does not exist", "invalid password for user"]]
+  - id: SL-11
+    severity: Medium
+    title: Newsletter form posts over HTTP; mixed-content image
+    match_all_groups: [["mixed content", "http://contoso", "newsletter", "insecure form", "plain http"]]
+  - id: SL-12
+    severity: Low
+    title: robots.txt and a directory listing reveal backup and admin paths
+    match_all_groups: [["robots", "backup", "directory listing", "admin-old"]]
+  - id: SL-13
+    severity: Low
+    title: Outdated client libraries advertised (jQuery 1.12.4, Bootstrap 3.3.7)
+    match_all_groups: [["jquery", "bootstrap", "1.12.4", "outdated"]]

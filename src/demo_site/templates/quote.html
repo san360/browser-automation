@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Get a quote{% endblock %}
+{% block content %}
+<h1>Get an instant quote</h1>
+{% if errors %}
+<div class="error-summary" role="alert">
+  <h2>Please fix the following</h2>
+  <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+<form class="panel" action="/quote" method="post" id="quote-form">
+  <div class="field">
+    <label for="plan">Plan</label>
+    <select id="plan" name="plan" required>
+      <option value="">Choose a plan</option>
+      {% for p in products %}<option value="{{ p.slug }}" {% if form.plan == p.slug %}selected{% endif %}>{{ p.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="age">Age of main policyholder</label>
+    <input id="age" name="age" type="number" min="16" max="99" required value="{{ form.age|default('') }}">
+  </div>
+  <div class="field">
+    <label for="zip_code">ZIP code</label>
+    <input id="zip_code" name="zip_code" inputmode="numeric" pattern="[0-9]{5}" required value="{{ form.zip_code|default('') }}">
+  </div>
+  <fieldset class="field">
+    <legend>Payment frequency</legend>
+    <label><input type="radio" name="payment" value="monthly" {% if form.payment != 'annual' %}checked{% endif %}> Monthly</label>
+    <label><input type="radio" name="payment" value="annual" {% if form.payment == 'annual' %}checked{% endif %}> Annual (8% discount)</label>
+  </fieldset>
+  <fieldset class="field">
+    <legend>Optional add-ons</legend>
+    {% set chosen = form.add_ons|default([]) %}
+    <label><input type="checkbox" name="add_ons" value="roadside-plus" {% if 'roadside-plus' in chosen %}checked{% endif %}> Roadside Plus (+$6.00/month)</label>
+    <label><input type="checkbox" name="add_ons" value="legal-cover" {% if 'legal-cover' in chosen %}checked{% endif %}> Legal cover (+$4.50/month)</label>
+    <label><input type="checkbox" name="add_ons" value="gadget-cover" {% if 'gadget-cover' in chosen %}checked{% endif %}> Gadget cover (+$7.00/month)</label>
+    <label><input type="checkbox" name="add_ons" value="extreme-sports" {% if 'extreme-sports' in chosen %}checked{% endif %}> Extreme sports (+$8.00/month)</label>
+  </fieldset>
+  <button type="submit">Calculate quote</button>
+</form>
+
+{% if result %}
+<section class="panel result" id="quote-result" aria-live="polite">
+  <h2>Your quote {{ result.ref }}</h2>
+  <dl class="summary">
+    <dt>Plan</dt><dd>{{ result.product.name }}</dd>
+    <dt>Base monthly premium</dt><dd>${{ '%.2f'|format(result.base) }}</dd>
+    <dt>Age factor</dt><dd>&times;{{ result.age_factor }}</dd>
+    <dt>Add-ons</dt><dd>${{ '%.2f'|format(result.add_on_total) }} / month</dd>
+    <dt>Total monthly</dt><dd id="quote-monthly">${{ '%.2f'|format(result.monthly) }}</dd>
+    <dt>Total per year</dt><dd id="quote-annual">${{ '%.2f'|format(result.annual) }}</dd>
+    <dt>Discount</dt><dd>{{ result.discount }}</dd>
+  </dl>
+</section>
+{% endif %}
+{% endblock %}

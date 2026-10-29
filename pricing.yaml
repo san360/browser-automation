@@ -1,0 +1,15 @@
+# Prices used by `python -m demo_cli` to estimate the cost of each run. Edit to match your agreement.
+# Verify current list prices: https://azure.microsoft.com/pricing/details/ai-foundry-models/aoai/ and
+# https://azure.microsoft.com/pricing/details/app-testing/ (or the Azure Retail Prices API).
+currency: USD
+models:                       # USD per 1M tokens, Global Standard (Azure Retail Prices API, Sweden Central, Oct 2026)
+  # cached_input is charged for prompt-cache hits (usage.input_tokens_details.cached_tokens). Multi-step browser runs
+  # resend the same prefix on every turn, so most input tokens are usually cached.
+  gpt-4.1-mini: {input: 0.40, cached_input: 0.10, output: 1.60}
+  gpt-5.4-mini: {input: 0.75, cached_input: 0.075, output: 4.50}
+  gpt-4o-mini: {input: 0.15, cached_input: 0.075, output: 0.60}
+  computer-use-preview: {input: 3.00, output: 12.00}
+playwright_per_minute: 0.01   # Linux cloud browser minute (first 100 minutes free during the 30-day trial)
+deployment_multiplier:        # Data Zone deployments are typically ~10% above Global Standard
+  GlobalStandard: 1.0
+  DataZoneStandard: 1.1

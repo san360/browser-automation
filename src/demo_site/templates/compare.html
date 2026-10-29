@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Compare plans{% endblock %}
+{% block content %}
+<h1>Compare plans</h1>
+{% if error %}
+<p class="error" role="alert">{{ error }}</p>
+<p><a href="/products">Back to plans</a></p>
+{% else %}
+<table class="data-table compare-table" id="compare-table">
+  <thead><tr><th scope="col">Feature</th>{% for p in plans %}<th scope="col">{{ p.name }}</th>{% endfor %}</tr></thead>
+  <tbody>
+    <tr><th scope="row">Monthly premium</th>{% for p in plans %}<td>${{ '%.2f'|format(p.monthly_premium) }}</td>{% endfor %}</tr>
+    <tr><th scope="row">Annual cost</th>{% for p in plans %}<td>${{ '%.2f'|format(p.monthly_premium * 12) }}</td>{% endfor %}</tr>
+    <tr><th scope="row">Deductible</th>{% for p in plans %}<td>${{ '{:,}'.format(p.deductible) }}</td>{% endfor %}</tr>
+    <tr><th scope="row">Coverage limit</th>{% for p in plans %}<td>${{ '{:,}'.format(p.coverage_limit) }}</td>{% endfor %}</tr>
+    <tr><th scope="row">Included</th>{% for p in plans %}<td><ul>{% for h in p.highlights %}<li>{{ h }}</li>{% endfor %}</ul></td>{% endfor %}</tr>
+    <tr><th scope="row">Not included</th>{% for p in plans %}<td><ul>{% for e in p.exclusions %}<li>{{ e }}</li>{% endfor %}</ul></td>{% endfor %}</tr>
+  </tbody>
+</table>
+<p><a href="/products">Back to plans</a> &middot; <a href="/quote">Get a quote</a></p>
+{% endif %}
+{% endblock %}

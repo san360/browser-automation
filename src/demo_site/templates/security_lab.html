@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Partner portal (legacy){% endblock %}
+{% block head_extra %}
+  <meta name="generator" content="ContosoCMS 2.1.0">
+  <!-- build 2.1.0 | jQuery v1.12.4 | Bootstrap v3.3.7 -->
+  <script>
+    // TRAINING LAB: intentionally exposed client-side configuration. The key below is fake.
+    window.APP_CONFIG = {
+      apiBase: "http://internal-api.contoso.local/v1",
+      apiKey: "DEMO-NOT-A-REAL-KEY-0000",
+      debug: true
+    };
+  </script>
+{% endblock %}
+{% block content %}
+<div class="lab-banner" role="note">Security training lab. This page is intentionally misconfigured for passive security-review demos. Everything on it is fake.</div>
+<!-- TODO(dev): remove before go-live. Legacy admin console still reachable at /security-lab/admin-old/ (default login admin / admin) -->
+<h1>Partner portal sign-in (legacy)</h1>
+{% if message %}<p class="error" role="alert" id="login-message">{{ message }}</p>{% endif %}
+<form class="panel" action="/security-lab/login" method="get" id="legacy-login">
+  <div class="field">
+    <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="on">
+  </div>
+  <div class="field">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="on">
+  </div>
+  <button type="submit">Sign in</button>
+</form>
+
+<section class="panel">
+  <h2>Partner newsletter</h2>
+  <form action="http://contoso-newsletter.invalid/subscribe" method="post" id="newsletter">
+    <label for="news-email">Email</label>
+    <input id="news-email" name="email" type="email">
+    <button type="submit">Subscribe</button>
+  </form>
+  <img src="http://contoso-assets.invalid/promo-banner.png" alt="Partner promotion banner" width="300" height="60">
+</section>
+
+<p>Partner resources: <a href="/security-lab/backup/">document archive</a> &middot; <a href="/security-lab/secure">new partner portal</a></p>
+{% endblock %}

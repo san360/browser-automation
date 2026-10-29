@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}{{ site_name }}{% endblock %} | {{ site_name }}</title>
+  <link rel="stylesheet" href="/static/css/site.css">
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <div class="demo-banner">Demo site for browser-automation scenarios. All data is fictitious.</div>
+  <header class="site-header">
+    <a class="brand" href="/">
+      {% if buggy %}<img src="/static/img/logo-v2.png" class="logo">{% else %}<img src="/static/img/logo.svg" class="logo" alt="Contoso Insurance logo">{% endif %}
+      <span>{{ site_name }}</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="/products">Plans</a>
+      <a href="/quote">Get a quote</a>
+      <a href="/claims/new">File a claim</a>
+      <a href="/agents">Find an agent</a>
+      <a href="/faq">FAQ</a>
+    </nav>
+    <form class="header-search" action="/search" method="get" role="search">
+      <label for="header-q" class="visually-hidden">Search help articles</label>
+      <input id="header-q" name="q" type="search" placeholder="Search help articles" value="{{ q|default('') }}">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <p>&copy; {{ current_year }} {{ site_name }} (fictitious company).</p>
+    <nav aria-label="Footer">
+      {% if buggy %}<a href="/terms-of-use">Terms of use</a>{% else %}<a href="/terms">Terms of use</a>{% endif %}
+      <a href="/bug-lab">Beta claims experience</a>
+      <a href="/security-lab/">Security training lab</a>
+    </nav>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

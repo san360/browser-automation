@@ -1,0 +1,20 @@
+id: 14-public-web-research
+title: Research a public website (bring your own URL)
+level: 2
+category: research
+modes: [prompt, hosted, cua]
+url: https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation
+inputs:
+  question: What are the prerequisites to use this capability, and which limitations or responsible-use notes are called out?
+task: |
+  Open {{ url }} and answer the question below using only information found on that page and pages it links to
+  on the same site (at most 3 extra pages).
+  Question: {{ inputs.question }}
+  Cite the URL of every page you used next to the facts taken from it. If the page does not answer the question, say so.
+success_criteria:
+  - {type: min_length, value: 300}
+limits:
+  max_output_tokens: 2500
+  max_tool_calls: 20
+  timeout_seconds: 480
+  max_cua_steps: 40

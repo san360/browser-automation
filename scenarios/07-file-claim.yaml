@@ -1,0 +1,44 @@
+id: 07-file-claim
+title: Complete a 4-step claim wizard with dependent and conditional fields
+level: 3
+category: form-filling
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/claims/new
+inputs:
+  first_name: Ana
+  last_name: Morales
+  email: ana.morales@example.com
+  phone: "+1 425-555-0100"
+  dob: "1988-04-12"
+  contact_method: Email
+  policy_number: CI-100200
+  policy_type: Home
+  coverage_level: Plus
+  incident_date: "2026-10-20"
+  claim_category: Water damage
+  estimated_amount: "1,250.50"
+  description: A pipe burst under the kitchen sink overnight and water damaged the floor and two cabinets.
+  police_report: "No"
+  witnesses: 2
+task: |
+  Go to {{ url }} and file an insurance claim with the data below. The form is a 4-step wizard:
+  some dropdowns only populate after you pick the policy type, and some fields only appear after you
+  tick a checkbox or choose a radio option. Fix any validation error you encounter using the hints on the page.
+
+  - Policyholder: {{ inputs.first_name }} {{ inputs.last_name }}, email {{ inputs.email }}, phone {{ inputs.phone }},
+    date of birth {{ inputs.dob }}, preferred contact method {{ inputs.contact_method }}
+  - Policy: number {{ inputs.policy_number }}, type {{ inputs.policy_type }}, coverage level {{ inputs.coverage_level }}
+  - Incident: date {{ inputs.incident_date }}, category {{ inputs.claim_category }}, estimated amount {{ inputs.estimated_amount }},
+    description "{{ inputs.description }}", police report filed: {{ inputs.police_report }},
+    photos available: yes, witnesses present: yes ({{ inputs.witnesses }} witnesses)
+  - Review the summary on step 4, confirm the declaration checkbox and submit.
+
+  Report the claim reference exactly as shown on the confirmation page, and list any problems you hit.
+success_criteria:
+  - {type: regex, pattern: "CLM-\\d{4}-\\d{5}", capture_as: claim_ref}
+  - {type: http_json, url: "${DEMO_SITE_URL}/api/claims/{claim_ref}", expect: {policy_number: CI-100200, estimated_amount: 1250.5, witness_count: 2}}
+limits:
+  max_output_tokens: 2000
+  max_tool_calls: 40
+  timeout_seconds: 600
+  max_cua_steps: 80

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Plans{% endblock %}
+{% block content %}
+<h1>Plans and prices</h1>
+<nav class="tabs" aria-label="Plan type">
+  <a href="/products" {% if not selected_type %}aria-current="page"{% endif %}>All</a>
+  <a href="/products?type=auto" {% if selected_type == 'auto' %}aria-current="page"{% endif %}>Auto</a>
+  <a href="/products?type=home" {% if selected_type == 'home' %}aria-current="page"{% endif %}>Home</a>
+  <a href="/products?type=travel" {% if selected_type == 'travel' %}aria-current="page"{% endif %}>Travel</a>
+</nav>
+<form action="/products/compare" method="get">
+  <table class="data-table" id="plans-table">
+    <caption>Monthly premiums. Select two or more plans to compare them side by side.</caption>
+    <thead>
+      <tr><th scope="col">Compare</th><th scope="col">Plan</th><th scope="col">Type</th><th scope="col">Monthly premium</th><th scope="col">Deductible</th><th scope="col">Coverage limit</th><th scope="col">Highlights</th></tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td><input type="checkbox" name="plans" value="{{ p.slug }}" id="cmp-{{ p.slug }}"><label for="cmp-{{ p.slug }}" class="visually-hidden">Compare {{ p.name }}</label></td>
+        <th scope="row">{{ p.name }}</th>
+        <td>{{ p.type|capitalize }}</td>
+        <td>${{ '%.2f'|format(p.monthly_premium) }}</td>
+        <td>${{ '{:,}'.format(p.deductible) }}</td>
+        <td>${{ '{:,}'.format(p.coverage_limit) }}</td>
+        <td>{{ p.highlights|join('; ') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit">Compare selected plans</button>
+</form>
+{% endblock %}

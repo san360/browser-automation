@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h1>Search help articles</h1>
+<form class="panel" action="/search" method="get" role="search">
+  <div class="field">
+    <label for="search-q">Search terms</label>
+    <input id="search-q" name="q" type="search" value="{{ q }}" placeholder="e.g. deductible">
+  </div>
+  <div class="field">
+    <label for="search-category">Category</label>
+    <select id="search-category" name="category">
+      <option value="">All categories</option>
+      {% for c in categories %}<option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c|capitalize }}</option>{% endfor %}
+    </select>
+  </div>
+  <button type="submit">Search</button>
+</form>
+
+{% if q or category %}
+<p class="result-count" id="result-count">{{ results|length }} result{{ '' if results|length == 1 else 's' }}{% if q %} for &ldquo;{{ q }}&rdquo;{% endif %}{% if category %} in {{ category }}{% endif %}</p>
+<ol class="results">
+  {% for r in results %}
+  <li class="result">
+    <a href="/articles/{{ r.slug }}">{{ r.title }}</a>
+    <span class="tag">{{ r.category }}</span>
+    <p>{{ r.summary }}</p>
+  </li>
+  {% else %}
+  <li>No articles matched. Try a different term.</li>
+  {% endfor %}
+</ol>
+{% endif %}
+{% endblock %}

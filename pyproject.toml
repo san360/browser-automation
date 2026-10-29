@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "foundry-browser-automation-demo"
+version = "1.0.0"
+description = "End-to-end demo of the Microsoft Foundry Browser Automation tool (prompt + hosted agents) and Computer Use"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "azure-ai-projects>=2.9.0",
+    "azure-identity>=1.26.0",
+    "openai>=2.0",
+    "httpx>=0.28",
+    "pyyaml>=6.0",
+    "jinja2>=3.1",
+    "rich>=13.7",
+    "python-dotenv>=1.0",
+    "playwright>=1.55",
+]
+
+[project.optional-dependencies]
+ui = ["fastapi>=0.115", "uvicorn>=0.30"]
+dev = ["pytest>=8", "fastapi>=0.115", "uvicorn>=0.30", "python-multipart>=0.0.9"]
+
+[project.scripts]
+bademo = "demo_cli.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["demo_common*", "prompt_agent*", "computer_use*", "demo_cli*", "web_console*"]
+
+[tool.setuptools.package-data]
+prompt_agent = ["*.md"]
+web_console = ["static/*.html", "static/*.svg", "static/css/*.css", "static/js/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "src/hosted_agent", "src/demo_site"]

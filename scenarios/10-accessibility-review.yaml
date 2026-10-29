@@ -1,0 +1,27 @@
+id: 10-accessibility-review
+title: Accessibility (WCAG 2.2) review of key pages
+level: 4
+category: accessibility
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/bug-lab/claims/new
+answer_key: answer-keys/accessibility.yaml
+inputs:
+  pages: |
+    - {{url}} (beta claim form, steps 1 and 2)
+    - ${DEMO_SITE_URL}/ (home page)
+task: |
+  Perform an accessibility review against WCAG 2.2 level AA of these pages:
+  {{ inputs.pages }}
+  Check at least: images without text alternatives, form labels correctly associated with inputs,
+  error messages announced to assistive technology, colour contrast of text and hints, keyboard operability
+  of dialogs and buttons, heading structure and page language.
+  For each issue return: WCAG success criterion, page, element, problem, impact on users, recommended fix.
+  Mark issues you could only infer (not verify) as "needs manual verification".
+success_criteria:
+  - {type: regex, pattern: "(?i)alt"}
+  - {type: regex, pattern: "(?i)label"}
+limits:
+  max_output_tokens: 4000
+  max_tool_calls: 40
+  timeout_seconds: 600
+  max_cua_steps: 60

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Claim received{% endblock %}
+{% block content %}
+<section class="panel success" aria-live="polite">
+  <h1>Claim received</h1>
+  <p>Your claim reference is <strong id="claim-reference">{{ claim.reference }}</strong>.</p>
+  <p>We sent a confirmation to {{ claim.email }}. Most claims are decided within 10 business days.</p>
+  <dl class="summary">
+    <dt>Policyholder</dt><dd>{{ claim.policyholder }}</dd>
+    <dt>Policy</dt><dd>{{ claim.policy_number }} ({{ claim.policy_type|capitalize }} &ndash; {{ claim.coverage_level }})</dd>
+    <dt>Incident</dt><dd>{{ claim.claim_category }} on {{ claim.incident_date }}</dd>
+    <dt>Estimated amount</dt><dd>${{ '{:,.2f}'.format(claim.estimated_amount) }}</dd>
+    {% if claim.police_report_number %}<dt>Police report</dt><dd>{{ claim.police_report_number }}</dd>{% endif %}
+    <dt>Witnesses</dt><dd>{{ claim.witness_count }}</dd>
+    <dt>Status</dt><dd>{{ claim.status }}</dd>
+  </dl>
+</section>
+{% endblock %}

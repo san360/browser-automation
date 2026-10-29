@@ -1,0 +1,28 @@
+id: 06-quote-calculator
+title: Fill the same form several times and tabulate results
+level: 2
+category: form-filling
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/quote
+inputs:
+  plan: Auto Plus
+  zip_code: "98052"
+  profiles: |
+    A) age 23, monthly payment, add-on Roadside Plus
+    B) age 45, annual payment, no add-ons
+    C) age 72, monthly payment, add-on Legal cover
+task: |
+  Go to {{ url }}. Get a quote for the plan "{{ inputs.plan }}" with ZIP code {{ inputs.zip_code }} for each profile below.
+  Submit the form once per profile (clear previous choices between runs).
+  {{ inputs.profiles }}
+  Return a Markdown table with: profile, quote reference, total monthly, total per year, discount.
+  Finish with one sentence explaining what drives the price differences.
+success_criteria:
+  - {type: contains, value: "92.40"}
+  - {type: contains, value: "706.56"}
+  - {type: contains, value: "78.10"}
+limits:
+  max_output_tokens: 2000
+  max_tool_calls: 30
+  timeout_seconds: 480
+  max_cua_steps: 60

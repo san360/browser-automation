@@ -1,0 +1,29 @@
+id: 11-regression-smoke-test
+title: Execute a natural-language smoke test plan
+level: 4
+category: qa
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}
+inputs:
+  test_plan: |
+    T1. The home page loads and shows the heading "Insurance that keeps up with you".
+    T2. Searching help articles for "deductible" returns at least one result titled "What is a deductible?".
+    T3. The Plans page lists exactly 8 plans.
+    T4. Comparing "Auto Basic" and "Auto Plus" shows a monthly premium of $39.00 and $64.00.
+    T5. A quote for "Travel Single-trip", age 30, ZIP 10001, monthly payment, no add-ons totals $9.00 per month.
+    T6. On the FAQ page, expanding "How long does a claim take?" mentions "10 business days".
+    T7. In the claim form, entering the email "not-an-email" and pressing Next shows an email validation message.
+    T8. The footer "Terms of use" link opens a page with the heading "Terms of use".
+task: |
+  You are an automated QA runner. Starting at {{ url }}, execute this test plan exactly, one test at a time:
+  {{ inputs.test_plan }}
+  Do not submit any claim. Return a Markdown table: Test | Result (PASS/FAIL) | Evidence (what you observed).
+  End with a line "SUMMARY: <passed>/<total> passed".
+success_criteria:
+  - {type: regex, pattern: "SUMMARY:\\s*8\\s*/\\s*8"}
+limits:
+  max_output_tokens: 2500
+  max_tool_calls: 50
+  timeout_seconds: 900
+  max_cua_steps: 100
+  max_recoveries: 4

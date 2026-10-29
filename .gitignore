@@ -1,0 +1,16 @@
+.azure/
+.env
+.env.*
+!.env.example
+!.env.template
+.foundry/
+.venv/
+**/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+runs/
+*.egg-info/
+build/
+dist/
+.DS_Store

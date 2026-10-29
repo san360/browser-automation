@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "${AZURE_ENV_NAME}"
+    },
+    "location": {
+      "value": "${AZURE_LOCATION}"
+    },
+    "principalId": {
+      "value": "${AZURE_PRINCIPAL_ID}"
+    },
+    "principalType": {
+      "value": "${AZURE_PRINCIPAL_TYPE=User}"
+    },
+    "foundryResourceGroupName": {
+      "value": "${AZURE_FOUNDRY_RESOURCE_GROUP}"
+    },
+    "foundryAccountName": {
+      "value": "${AZURE_AI_ACCOUNT_NAME}"
+    },
+    "foundryProjectName": {
+      "value": "${AZURE_AI_PROJECT_NAME}"
+    },
+    "playwrightLocation": {
+      "value": "${PLAYWRIGHT_LOCATION=westeurope}"
+    },
+    "playwrightLocalAuth": {
+      "value": "${PLAYWRIGHT_LOCAL_AUTH=Disabled}"
+    },
+    "demoSiteMinReplicas": {
+      "value": "${DEMO_SITE_MIN_REPLICAS=0}"
+    },
+    "demoSiteExists": {
+      "value": "${SERVICE_DEMO_SITE_RESOURCE_EXISTS=false}"
+    },
+    "enableBudget": {
+      "value": "${ENABLE_BUDGET=true}"
+    },
+    "budgetAmount": {
+      "value": "${BUDGET_AMOUNT=100}"
+    },
+    "logAnalyticsDailyCapGb": {
+      "value": "${LOG_ANALYTICS_DAILY_CAP_GB=1}"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+id: 02-site-search
+title: Use the site search and extract facts
+level: 1
+category: navigation
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}
+inputs:
+  query: water damage
+task: |
+  Go to {{ url }} and use the site's own search box (do not guess URLs) to search for "{{ inputs.query }}".
+  Open the most relevant result and answer:
+  1. The article title and its URL.
+  2. Which plans cover the issue and which do not.
+  3. Any deadline the customer must respect.
+  Answer in a short Markdown list and quote numbers exactly as written on the page.
+success_criteria:
+  - {type: contains, value: "14 days"}
+  - {type: contains, value: "Home Premium"}
+limits:
+  max_output_tokens: 1500
+  max_tool_calls: 15
+  timeout_seconds: 300
+  max_cua_steps: 20

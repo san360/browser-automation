@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Insurance that keeps up with you</h1>
+  <p>Compare plans, get an instant quote, or file a claim online in minutes.</p>
+  <form class="hero-search" action="/search" method="get" role="search">
+    <label for="q">What do you need help with?</label>
+    <div class="row">
+      <input id="q" name="q" type="search" placeholder="e.g. water damage, lost baggage" required>
+      <button type="submit">Search</button>
+    </div>
+  </form>
+</section>
+
+<section>
+  <h2>Popular plans</h2>
+  <div class="cards">
+    {% for p in products %}
+    <article class="card">
+      <h3>{{ p.name }}</h3>
+      <p class="price">${{ '%.2f'|format(p.monthly_premium) }} <span>/ month</span></p>
+      <ul>{% for h in p.highlights %}<li>{{ h }}</li>{% endfor %}</ul>
+      <a class="button" href="/products?type={{ p.type }}">See {{ p.type }} plans</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section>
+  <h2>Help centre</h2>
+  <ul class="link-list">
+    {% for a in articles %}<li><a href="/articles/{{ a.slug }}">{{ a.title }}</a> &ndash; {{ a.summary }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section class="cta-grid">
+  <a class="cta" href="/claims/new"><strong>File a claim</strong><span>Four short steps, instant reference number.</span></a>
+  <a class="cta" href="/quote"><strong>Get a quote</strong><span>Price any plan with optional add-ons.</span></a>
+  <a class="cta" href="/agents"><strong>Find an agent</strong><span>Search by city, specialty and language.</span></a>
+</section>
+{% endblock %}

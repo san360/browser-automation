@@ -1,0 +1,33 @@
+id: 09-ui-bug-hunt
+title: Exploratory testing - find and report UI defects
+level: 4
+category: qa
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/bug-lab/claims/new
+answer_key: answer-keys/bug-lab.yaml
+inputs:
+  tester_persona: a meticulous QA engineer
+task: |
+  Act as {{ inputs.tester_persona }} performing exploratory testing of the beta claim wizard at {{ url }}.
+  Do NOT stop at the first problem: keep testing and work around blockers where possible.
+
+  Test data (use exactly as written where it matters for the test):
+  - Traveller claim: Sam Patel, sam.patel@example.com, phone "+1 425-555-0100", born 1985-06-15, contact Email,
+    policy CI-300400, type Travel, any coverage, lost baggage, amount "1,250.50", a 40+ character description,
+    police report No, witnesses present (2).
+  - If Travel is blocked, switch to a Home claim (Water damage) so you can test the remaining steps.
+  - Also try an incident date in the future, the Back buttons, the cookie dialog buttons, the header logo,
+    the hints under fields and the footer links. Try to submit the claim at the end.
+
+  Report every defect as a Markdown table with columns:
+  ID | Title | Steps to reproduce | Expected | Actual | Severity (Critical/High/Medium/Low) | Category (functional, validation, data, navigation, visual, accessibility, content)
+  Then add a short "Release recommendation" paragraph.
+success_criteria:
+  - {type: regex, pattern: "(?i)travel"}
+  - {type: regex, pattern: "(?i)404|not found"}
+limits:
+  max_output_tokens: 5000
+  max_tool_calls: 60
+  timeout_seconds: 900
+  max_cua_steps: 120
+  max_recoveries: 6   # the beta wizard is broken on purpose: clicks on defective controls time out

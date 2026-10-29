@@ -1,0 +1,21 @@
+id: 03-extract-plans-table
+title: Extract a pricing table as structured JSON
+level: 1
+category: extraction
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/products
+inputs: {}
+task: |
+  Open {{ url }}. The page lists insurance plans in a table.
+  Extract every plan into a JSON array. Each element must have exactly these keys:
+  "plan", "type", "monthly_premium_usd" (number), "deductible_usd" (number), "coverage_limit_usd" (number), "highlights" (array of strings).
+  Return only the JSON array in a ```json code block, followed by one sentence naming the cheapest plan of each type.
+success_criteria:
+  - {type: contains, value: "Travel Annual multi-trip"}
+  - {type: contains, value: "Auto Premium"}
+  - {type: regex, pattern: "37(\\.0+)?\\b"}
+limits:
+  max_output_tokens: 3000
+  max_tool_calls: 10
+  timeout_seconds: 300
+  max_cua_steps: 15

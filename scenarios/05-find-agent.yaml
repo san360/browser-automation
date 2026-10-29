@@ -1,0 +1,24 @@
+id: 05-find-agent
+title: Filter a directory with dropdowns and checkboxes
+level: 2
+category: form-filling
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL}/agents
+inputs:
+  city: Seattle
+  specialty: Home
+  language: Spanish
+task: |
+  Go to {{ url }}. Use the search form to find agents in {{ inputs.city }} who specialise in {{ inputs.specialty }}
+  and speak {{ inputs.language }}. Submit the form and return name, phone, email and rating of every matching agent.
+  If no agent matches all three criteria, search again without the language criterion and say so in your answer.
+# Wording matters: an earlier version said "relax only the language filter", which Prompt Shields flagged as a
+# jailbreak attempt (asking the model to loosen a "filter") and blocked the run before any tool call.
+success_criteria:
+  - {type: contains, value: "Ana Morales"}
+  - {type: contains, value: "206-555-0141"}
+limits:
+  max_output_tokens: 1200
+  max_tool_calls: 15
+  timeout_seconds: 300
+  max_cua_steps: 25

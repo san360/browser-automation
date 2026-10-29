@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Index of /security-lab/backup/</title>
+</head>
+<body>
+  <h1>Index of /security-lab/backup/</h1>
+  <p><em>Security training lab: simulated directory listing. Files are not real and cannot be downloaded.</em></p>
+  <table>
+    <tr><th>Name</th><th>Last modified</th><th>Size</th></tr>
+    <tr><td><a href="/security-lab/">Parent Directory</a></td><td></td><td>-</td></tr>
+    {% for name, modified, size in files %}
+    <tr><td><a href="/security-lab/backup/{{ name }}">{{ name }}</a></td><td>{{ modified }}</td><td>{{ size }}</td></tr>
+    {% endfor %}
+  </table>
+  <address>Apache/2.2.15 (CentOS) Server at contoso-insurance Port 80</address>
+</body>
+</html>

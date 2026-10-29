@@ -1,0 +1,28 @@
+id: 12-passive-security-review
+title: Passive security review of a page you own
+level: 5
+category: security
+modes: [prompt, hosted]
+url: ${DEMO_SITE_URL}/security-lab/
+allowed_domains: ["${DEMO_SITE_HOST}"]
+answer_key: answer-keys/security-lab.yaml
+inputs:
+  standard: OWASP Top 10 (2021) and OWASP Secure Headers Project
+task: |
+  Perform a PASSIVE security review of {{ url }} (a training page we own and are authorised to test).
+  Rules: do not attempt exploits, brute force, injections or anything that changes server state.
+  You may read the page, its visible content, page source signals, forms, links, robots.txt and linked pages on the
+  same host, and (if you have such tools) HTTP response headers and cookies.
+  Look for: missing security headers, insecure cookies, information disclosure (comments, versions, internal hosts,
+  exposed keys), insecure forms (method, action over http, CSRF tokens, autocomplete), mixed content,
+  CORS misconfiguration and exposed backup/admin paths.
+  Return a findings table mapped to {{ inputs.standard }}:
+  ID | Finding | Evidence | Severity (High/Medium/Low/Info) | OWASP mapping | Recommended fix
+  Then state which findings you verified directly and which need tooling you did not have.
+success_criteria:
+  - {type: regex, pattern: "(?i)admin"}
+  - {type: regex, pattern: "(?i)api.?key|DEMO-NOT-A-REAL-KEY"}
+limits:
+  max_output_tokens: 4000
+  max_tool_calls: 30
+  timeout_seconds: 600

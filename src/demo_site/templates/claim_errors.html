@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Claim not submitted{% endblock %}
+{% block content %}
+<h1>We could not submit your claim</h1>
+<div class="error-summary" role="alert">
+  <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+</div>
+<p><a href="/claims/new">Start again</a></p>
+{% endblock %}

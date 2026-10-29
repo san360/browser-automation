@@ -1,0 +1,21 @@
+id: 01-page-summary
+title: Summarise any web page
+level: 1
+category: navigation
+modes: [prompt, hosted, cua]
+url: ${DEMO_SITE_URL:-https://learn.microsoft.com/azure/foundry/}
+inputs:
+  bullets: 5
+  audience: a busy business stakeholder
+task: |
+  Open {{ url }}.
+  Read the page (scroll if needed) and summarise what it offers for {{ inputs.audience }}
+  in at most {{ inputs.bullets }} bullet points. Then list the main navigation links you can see.
+  Only report what is actually on the page.
+success_criteria:
+  - {type: min_length, value: 200}
+limits:
+  max_output_tokens: 1500
+  max_tool_calls: 10
+  timeout_seconds: 240
+  max_cua_steps: 12
